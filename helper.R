@@ -1,24 +1,95 @@
 ## helper script for web-app ##
 
-feature_plot_fun <- function(seurat_obj, gene) {
-  if(!gene %in% rownames(seurat_obj)) {
-    return(NA)
+umap_plot_ggplot <- function(df_list, dataset, col_attr, split_attr = NA, point_size = 1) {
+  if(split_attr == "nothing, show combined") {split_attr <- NA}
+
+  ## select dataset:
+  if(dataset == "Inhibitory") {
+    df <- df_list$INH
+  } else if(dataset == "Inhibitory and Excitatory") {
+    df <- df_list$EI
+  } else {
+    print("No valid dataset specified")
+    df <- NULL
   }
-  FeaturePlot(seurat_obj, features = gene, reduction="umap")
+
+  ## plot aesthetics:
+  col_vec <- alphabet2(n = length(unique(df[, col_attr])))
+  names(col_vec) <- unique(df[, col_attr])
+  
+  g <- ggplot(df, aes(x = UMAP2_1, y = UMAP2_2, color = !! sym(col_attr))) +
+    geom_point(size = point_size) +
+    scale_color_manual(values = col_vec) +
+    theme_bw() +
+    theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+          legend.text = element_text(size=15), legend.title=element_text(size=15), plot.title = element_text(size = 15)) +
+    ggtitle(col_attr) +
+    guides(color = guide_legend(override.aes = list(size = 2)))
+  if(!is.na(split_attr)) {
+    g <- g +
+      facet_wrap(sym(split_attr))
+  }
+  return(g)
+}
+
+feature_plot_ggplot <- function(df_list, mtx_list, dataset, gene_name, split_attr = NA, point_size = 1) {
+  if(split_attr == "nothing, show combined") {split_attr <- NA}
+
+  ## choose datasets
+  if(dataset == "Inhibitory") {
+    df <- df_list$INH
+    mtx <- mtx_list$INH
+  } else if(dataset == "Inhibitory and Excitatory") {
+    df <- df_list$EI
+    mtx <- mtx_list$EI
+  } else {
+    print("No valid dataset specified")
+    df <- NULL
+    mtx <- NULL
+  }
+  
+  ## add expression to df:
+  df[, gene_name] <- mtx[, gene_name]
+  
+  g <- ggplot(df, aes(x = UMAP2_1, y = UMAP2_2, color = !! sym(gene_name))) +
+    geom_point(size = point_size) +
+    scale_color_gradient2(low = "#313695", mid = "#ffffbf", high = "#a50026", midpoint = 0) +
+    theme_bw() +
+    theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+          legend.title=element_text(size=15), plot.title = element_text(size = 15)) +
+    ggtitle(gene_name)
+  if(!is.na(split_attr)) {
+    g <- g +
+      facet_wrap(sym(split_attr))
+  }
+  return(g)
 }
 
 
-feature_plot_by_stage_fun <- function(seurat_obj, gene) {
-  if(!gene %in% rownames(seurat_obj)) {
-    return(NA)
-  }
-  FeaturePlot(seurat_obj, features = gene, reduction="umap", split.by = "Stage", ncol = 3)
-}
+
+# feature_plot_fun <- function(seurat_obj, gene) {
+#   if(!gene %in% rownames(seurat_obj)) {
+#     return(NA)
+#   }
+#   FeaturePlot(seurat_obj, features = gene, reduction="umap")
+# }
 
 
-network_plot <- function(eRegulon_md_df, tf, mm10_tfs, only_tfs = TRUE) {
+# feature_plot_by_stage_fun <- function(seurat_obj, gene) {
+#   if(!gene %in% rownames(seurat_obj)) {
+#     return(NA)
+#   }
+#   FeaturePlot(seurat_obj, features = gene, reduction="umap", split.by = "Stage", ncol = 3)
+# }
+
+
+network_plot <- function(eRegulon_md_df, tf1, tf2 = NA, tf3 = NA, mm10_tfs, only_tfs = TRUE) {
+  tf_vec <- c(tf1, tf2, tf3)
+  
   ## subset md_df:
-  eRegulon_sub <- eRegulon_md_df[eRegulon_md_df$TF == tf, ]
+  eRegulon_sub <- eRegulon_md_df[eRegulon_md_df$TF %in% tf_vec, ]
   
   if(only_tfs) {
     eRegulon_sub <- eRegulon_sub[eRegulon_sub$Gene %in% mm10_tfs, ]
