@@ -54,7 +54,7 @@ feature_plot_ggplot <- function(df_list, mtx_list, dataset, gene_name, split_att
   
   g <- ggplot(df, aes(x = UMAP2_1, y = UMAP2_2, color = !! sym(gene_name))) +
     geom_point(size = point_size) +
-    scale_color_gradient2(low = "#313695", mid = "#ffffbf", high = "#a50026", midpoint = 0) +
+    scale_color_gradient(low = "#ffffbf", high = "#a50026") +
     theme_bw() +
     theme(panel.border = element_blank(), panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
