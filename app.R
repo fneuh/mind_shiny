@@ -3,14 +3,16 @@
 ## load data and libraries ##
 library(shiny)
 library(bslib)
-#library(periscope)
 
-#library(Seurat)
 library(igraph)
 library(ggplot2)
 library(pals)
 library(data.table)
+
 #library(Matrix)
+#library(periscope)
+#library(Seurat)
+
 
 ## this needs to go to server.R or something don't really know actually..:
 #library(Cairo)
@@ -24,7 +26,7 @@ source("helper.R")
 
 ## EI:
 EI_umap_embedding <- fread("data/EI_merged_umap2_df.tsv", sep = "\t")
-EI_feature_df <- fread("data/EI_merged_log_count_mtx.csv")
+EI_feature_df <- fread("data/EI_merged_log_count_HVG_mtx.csv")
 
 
 EI_umap_embedding <- as.data.frame(EI_umap_embedding)
@@ -37,7 +39,7 @@ EI_feature_df <- as.data.frame(EI_feature_df)
 
 ## INH:
 INH_umap_embedding <- fread("data/inhibitory_datasets_umap2_df.tsv", sep = "\t")
-INH_feature_df <- fread("data/inhibitory_datasets_log_count_mtx.csv")
+INH_feature_df <- fread("data/inhibitory_datasets_log_count_HVG_mtx.csv")
 
 INH_umap_embedding <- as.data.frame(INH_umap_embedding)
 INH_umap_embedding$cluster <- factor(INH_umap_embedding$cluster, levels = c(
