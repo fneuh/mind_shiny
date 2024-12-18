@@ -59,9 +59,9 @@ feature_list <- list(
 )
 
 ## GRN:
-eRegulon_md_df <- read.table("/data/mayerlab/neuhaus/dorsal_ventral_comp/cfse_network/results_wArchRPeaks/eRegulon_metadata_filtered.tsv", sep = "\t", h=T)
+eRegulon_md_df <- read.table("data/eRegulon_metadata_filtered.tsv", sep = "\t", h=T)
 
-mm10_tfs <- read.table("/datastore_share/Users/neuhaus/for_Ann/mm_mgi_tfs.txt"); mm10_tfs <- mm10_tfs$V1
+mm10_tfs <- read.table("data/mm_mgi_tfs.txt"); mm10_tfs <- mm10_tfs$V1
 
 
 ## -----------------------------------------------------------------------------
