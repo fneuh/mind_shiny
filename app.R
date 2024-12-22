@@ -97,7 +97,7 @@ ui <- page_navbar(
     
     p("We provide the following panels to explore our data:"),
     h5("Dataset UMAPs"),
-    p("Explore structure of single-cell RNA-seq datasets. Visualize clusters, stages, experiments and studies. The data stems from this study (Kotylarenko et al. 2024) and two additional datasets: Development of inhibitory neurons from Bandler et al. 2022 and development of excitatory neurons in somato-sensory cortex from Di Bella et al. 2012."),
+    p("Explore structure of single-cell RNA-seq datasets. Visualize clusters, stages, experiments and studies. The data stems from this study (Kotylarenko et al. 2024) and two additional datasets: Development of inhibitory neurons from Bandler et al. 2022 and development of excitatory neurons in somatosensory cortex from Di Bella et al. 2012."),
     h5("RNA expression"),
     p("Visualize expression of a gene of interest. UMAP plots can be split by cluster, stage, experiment and study."),
     h5("Tracks"),
@@ -191,7 +191,7 @@ ui <- page_navbar(
   ## Tracks ##
   nav_panel(
     "Tracks", 
-    p("First page content.")
+    p("Coming soon.")
   ),
   
   ## Network ##
