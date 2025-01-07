@@ -113,4 +113,5 @@ network_plot <- function(eRegulon_md_df, tf1, tf2 = NA, tf3 = NA, mm10_tfs, only
   
   ## plot graph:
   plot(dg)
+  legend("topright", legend = c("activating","repressing"), lty = 1, col = c("blue","red"), lwd = 4)
 }
