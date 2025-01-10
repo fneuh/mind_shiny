@@ -105,9 +105,9 @@ network_plot <- function(eRegulon_md_df, tf1, tf2 = NA, tf3 = NA, mm10_tfs, only
                          edge.attr.comb = c(TF2G_importance_x_rho="mean", TF2G_regulation="mean"))
   
   ## graph visuals for plotting:
-  E(dg)$width <- 1 + E(dg)$TF2G_importance_x_rho*0.3
-  E(dg)$edge.arrow.size <- 1 + E(dg)$TF2G_importance_x_rho*0.3
-  E(dg)$edge.arrow.width <- 1+ E(dg)$TF2G_importance_x_rho*0.5
+  E(dg)$width <- 1 + E(dg)$TF2G_importance_x_rho*0.2
+  E(dg)$edge.arrow.size <- 1 + E(dg)$TF2G_importance_x_rho*0.2
+  E(dg)$edge.arrow.width <- 1+ E(dg)$TF2G_importance_x_rho*0.4
   edge_color_vec <- c("1"= "blue","-1" = "red", "0" = "grey")
   E(dg)$color <- edge_color_vec[as.character(E(dg)$TF2G_regulation)]
   

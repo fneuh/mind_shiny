@@ -84,9 +84,10 @@ ui <- page_navbar(
     layout_columns(
       card(
         p("This webserver accompanies this publication: "),
-        a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v1", "Kotlyarenko & Bright et al. 2024"),
+        a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2024"),
         h5("Abstract"),
-        p("Inhibitory neurons of the telencephalon are generated from progenitors in the ganglionic eminences that mature and differentiate into specialized cell types. Here, we used single cell transcriptomics and single cell chromatin accessibility together with lineage tracing and birthdating techniques to investigate the influence of progenitor competence on the development of GABAergic precursors. We found that the timing of neurogenesis influences the maturation competence of progenitors to develop towards a fully functional state, but not their differentiation competence to evolve into transcriptomically diverse states. The underlying mechanism defining maturation competence was chromatin priming, orchestrated by the transcription factor Nfib in collaboration with regulators of inhibitory neuron development. Finally, transplantation experiments revealed an interplay between both intrinsic and extrinsic cues acting upon maturation competence. These findings identify a mechanism that coordinates inhibitory neuron development by changing its maturation to achieve maximum adaptability to their environment.")
+        p("Diverse types of GABAergic projection neurons and interneurons of the telencephalon derive from progenitors in a ventral germinal zone, called the ganglionic eminence. Using single-cell transcriptomics, chromatin accessibility profiling, lineage tracing, birthdating, heterochronic transplantation, and perturbation sequencing in mouse embryos, we investigated how progenitor competence influences the maturation and differentiation of these neurons. We found that the progression of neurogenesis over developmental time shapes maturation competence in ganglionic eminence progenitors, influencing how they progress into mature states. In contrast, differentiation competence, which defines the ability to produce diverse transcriptomic identities, remains largely unaffected by the stages of neurogenesis. Chromatin remodeling alongside a NFIB-driven regulatory gene module influences maturation competence in late-born neurons. These findings provide key insights into how transcriptional programs and chromatin accessibility govern neuronal maturation and the diversification of GABAergic neuron subtypes during neurodevelopment.")
+        #p("Inhibitory neurons of the telencephalon are generated from progenitors in the ganglionic eminences that mature and differentiate into specialized cell types. Here, we used single cell transcriptomics and single cell chromatin accessibility together with lineage tracing and birthdating techniques to investigate the influence of progenitor competence on the development of GABAergic precursors. We found that the timing of neurogenesis influences the maturation competence of progenitors to develop towards a fully functional state, but not their differentiation competence to evolve into transcriptomically diverse states. The underlying mechanism defining maturation competence was chromatin priming, orchestrated by the transcription factor Nfib in collaboration with regulators of inhibitory neuron development. Finally, transplantation experiments revealed an interplay between both intrinsic and extrinsic cues acting upon maturation competence. These findings identify a mechanism that coordinates inhibitory neuron development by changing its maturation to achieve maximum adaptability to their environment.")
       ),
       
       card(
@@ -97,11 +98,11 @@ ui <- page_navbar(
     
     p("We provide the following panels to explore our data:"),
     h5("Dataset UMAPs"),
-    p("Explore structure of single-cell RNA-seq datasets. Visualize clusters, stages, experiments and studies. The data stems from this study (Kotylarenko et al. 2024) and two additional datasets: Development of inhibitory neurons from Bandler et al. 2022 and development of excitatory neurons in somatosensory cortex from Di Bella et al. 2012."),
+    p("Explore structure of single-cell RNA-seq datasets. Visualize clusters, stages, experiments and studies. The data stems from this study and two additional datasets: Development of inhibitory neurons from Bandler et al. 2022 and development of excitatory neurons in somatosensory cortex from Di Bella et al. 2012."),
     h5("RNA expression"),
     p("Visualize expression of a gene of interest. UMAP plots can be split by cluster, stage, experiment and study."),
     h5("Tracks"),
-    p("Link to UCSC session"),
+    p("Data from scATAC-seq and NFIB CUT&RUN experiments can be explored in UCSC genome browser"),
     h5("Network"),
     p("Explore interactions between up to 3 TFs and their direct target genes.")
   ),
@@ -191,7 +192,9 @@ ui <- page_navbar(
   ## Tracks ##
   nav_panel(
     "Tracks", 
-    p("Coming soon.")
+    p("Data from scATAC-seq experiments (e12.5 and e16.5) together with data from NFIB CUT&RUN experiments can be explored in UCSC genome browser session:"),
+    a(href="https://genome.ucsc.edu/s/annrosebright/MIND%20Trackhub", "LINK to genome browser"),
+    p("Available tracks include chromatin accessibility at e12.5 and e16.5 for all cells and split by broad cell states (AP, BP, precursor). For CUT&RUN experiments we show 2 tracks: NFIB and H3K4me3")
   ),
   
   ## Network ##
