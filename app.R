@@ -9,21 +9,10 @@ library(ggplot2)
 library(pals)
 library(data.table)
 
-#library(Matrix)
-#library(periscope)
-#library(Seurat)
-
-
-## this needs to go to server.R or something don't really know actually..:
-#library(Cairo)
-#options(shiny.usecairo=T)
-
 ## read helper functions:
 source("helper.R")
 
-
 ## read pre-processed tables:
-
 ## EI:
 EI_umap_embedding <- fread("data/EI_merged_umap2_df.tsv", sep = "\t")
 EI_feature_df <- fread("data/EI_merged_log_count_sub_mtx.csv")
@@ -60,7 +49,6 @@ feature_list <- list(
 
 ## GRN:
 eRegulon_md_df <- read.table("data/eRegulon_metadata_filtered.tsv", sep = "\t", h=T)
-
 mm10_tfs <- read.table("data/mm_mgi_tfs.txt"); mm10_tfs <- mm10_tfs$V1
 
 
@@ -72,7 +60,6 @@ ui <- page_navbar(
   title = "Mouse Inhibitory Neuron Development",
   bg = "#b2abd2",
   
-  
   ## ---------------------------------------------------------------------------
   ## HOME ##
   nav_panel(
@@ -81,26 +68,40 @@ ui <- page_navbar(
     
     h2("Mouse Inhibitory Neuron Development"),
     
-    layout_columns(
-      card(
-        p("This webserver accompanies this publication: "),
-        a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2024"),
-        h5("Abstract"),
-        p("Diverse types of GABAergic projection neurons and interneurons of the telencephalon derive from progenitors in a ventral germinal zone, called the ganglionic eminence. Using single-cell transcriptomics, chromatin accessibility profiling, lineage tracing, birthdating, heterochronic transplantation, and perturbation sequencing in mouse embryos, we investigated how progenitor competence influences the maturation and differentiation of these neurons. We found that the progression of neurogenesis over developmental time shapes maturation competence in ganglionic eminence progenitors, influencing how they progress into mature states. In contrast, differentiation competence, which defines the ability to produce diverse transcriptomic identities, remains largely unaffected by the stages of neurogenesis. Chromatin remodeling alongside a NFIB-driven regulatory gene module influences maturation competence in late-born neurons. These findings provide key insights into how transcriptional programs and chromatin accessibility govern neuronal maturation and the diversification of GABAergic neuron subtypes during neurodevelopment.")
-        #p("Inhibitory neurons of the telencephalon are generated from progenitors in the ganglionic eminences that mature and differentiate into specialized cell types. Here, we used single cell transcriptomics and single cell chromatin accessibility together with lineage tracing and birthdating techniques to investigate the influence of progenitor competence on the development of GABAergic precursors. We found that the timing of neurogenesis influences the maturation competence of progenitors to develop towards a fully functional state, but not their differentiation competence to evolve into transcriptomically diverse states. The underlying mechanism defining maturation competence was chromatin priming, orchestrated by the transcription factor Nfib in collaboration with regulators of inhibitory neuron development. Finally, transplantation experiments revealed an interplay between both intrinsic and extrinsic cues acting upon maturation competence. These findings identify a mechanism that coordinates inhibitory neuron development by changing its maturation to achieve maximum adaptability to their environment.")
-      ),
-      
-      card(
-        img(src = "ge_scheme.png")
-      ),
-      col_widths = c(7,3)
-    ),
+    p("This webserver accompanies this publication: "),
+    a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2024"),
+    h5("Abstract"),
+    p("Diverse types of GABAergic projection neurons and interneurons of the telencephalon derive from progenitors in a ventral germinal zone, called the ganglionic eminence. Using single-cell transcriptomics, chromatin accessibility profiling, lineage tracing, birthdating, heterochronic transplantation, and perturbation sequencing in mouse embryos, we investigated how progenitor competence influences the maturation and differentiation of these neurons. We found that the progression of neurogenesis over developmental time shapes maturation competence in ganglionic eminence progenitors, influencing how they progress into mature states. In contrast, differentiation competence, which defines the ability to produce diverse transcriptomic identities, remains largely unaffected by the stages of neurogenesis. Chromatin remodeling alongside a NFIB-driven regulatory gene module influences maturation competence in late-born neurons. These findings provide key insights into how transcriptional programs and chromatin accessibility govern neuronal maturation and the diversification of GABAergic neuron subtypes during neurodevelopment."),
+
+    
+    # layout_columns(
+    #   card(
+    #     p("This webserver accompanies this publication: "),
+    #     a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2024"),
+    #     h5("Abstract"),
+    #     p("Diverse types of GABAergic projection neurons and interneurons of the telencephalon derive from progenitors in a ventral germinal zone, called the ganglionic eminence. Using single-cell transcriptomics, chromatin accessibility profiling, lineage tracing, birthdating, heterochronic transplantation, and perturbation sequencing in mouse embryos, we investigated how progenitor competence influences the maturation and differentiation of these neurons. We found that the progression of neurogenesis over developmental time shapes maturation competence in ganglionic eminence progenitors, influencing how they progress into mature states. In contrast, differentiation competence, which defines the ability to produce diverse transcriptomic identities, remains largely unaffected by the stages of neurogenesis. Chromatin remodeling alongside a NFIB-driven regulatory gene module influences maturation competence in late-born neurons. These findings provide key insights into how transcriptional programs and chromatin accessibility govern neuronal maturation and the diversification of GABAergic neuron subtypes during neurodevelopment.")
+    #   ),
+    # 
+    #   card(
+    #     img(src = "ge_scheme.png")
+    #   ),
+    #   col_widths = breakpoints(
+    #     sm = c(4,1),
+    #     md = c(6,3),
+    #     lg = c(8,4)
+    #   ),
+    #   row_heights = breakpoints(
+    #     sm = c(20),
+    #     md = c(16),
+    #     lg = c(12)
+    #   )
+    # ),
     
     p("We provide the following panels to explore our data:"),
     h5("Dataset UMAPs"),
-    p("Explore structure of single-cell RNA-seq datasets. Visualize clusters, stages, experiments and studies. The data stems from this study and two additional datasets: Development of inhibitory neurons from Bandler et al. 2022 and development of excitatory neurons in somatosensory cortex from Di Bella et al. 2012."),
+    p("Explore structure of single-cell RNA-seq datasets. Visualize clusters, stages, experiments and studies. The data stems from this study and two additional datasets: Development of inhibitory neurons from Bandler, Vitali & Delgado et al. 2021 and development of excitatory neurons in somatosensory cortex from Di Bella & Habibi et al. 2021."),
     h5("RNA expression"),
-    p("Visualize expression of a gene of interest. UMAP plots can be split by cluster, stage, experiment and study."),
+    p("Visualize expression of a gene of interest. UMAP plots can be split by cluster, stage, experiment and study. Genes were filtered for genes that are either highly-variable (n=5000) or having log-normalized expression greater than 0.5."),
     h5("Tracks"),
     p("Data from scATAC-seq and NFIB CUT&RUN experiments can be explored in UCSC genome browser"),
     h5("Network"),
@@ -167,7 +168,7 @@ ui <- page_navbar(
         textInput(
           inputId = "gene",
           label = "Select your gene of interest:",
-          value = "Nfib"
+          value = "Nfib",
         ),
         selectInput(
           inputId = "feature_split_by",
@@ -207,20 +208,23 @@ ui <- page_navbar(
         helpText(
           "Create subnetwork for TFs of interest."
         ),
-        textInput(
+        selectInput(
           inputId = "tf1",
           label = "Type your TF of interest: ",
-          value = "Nfib"
+          selected = "Nfib",
+          choices = unique(eRegulon_md_df$TF)
         ),
-        textInput(
+        selectInput(
           inputId = "tf2",
           label = "Type another TF of interest: ",
-          value = "not chosen"
+          selected = "not chosen",
+          choices = c("not chosen", unique(eRegulon_md_df$TF))
         ),
-        textInput(
+        selectInput(
           inputId = "tf3",
           label = "Type a third TF of interest: ",
-          value = "not chosen"
+          selected = "not chosen",
+          choices = c("not chosen", unique(eRegulon_md_df$TF))
         ),
         selectInput(
           inputId = "only_TF",

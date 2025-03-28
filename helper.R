@@ -69,22 +69,6 @@ feature_plot_ggplot <- function(df_list, mtx_list, dataset, gene_name, split_att
 
 
 
-# feature_plot_fun <- function(seurat_obj, gene) {
-#   if(!gene %in% rownames(seurat_obj)) {
-#     return(NA)
-#   }
-#   FeaturePlot(seurat_obj, features = gene, reduction="umap")
-# }
-
-
-# feature_plot_by_stage_fun <- function(seurat_obj, gene) {
-#   if(!gene %in% rownames(seurat_obj)) {
-#     return(NA)
-#   }
-#   FeaturePlot(seurat_obj, features = gene, reduction="umap", split.by = "Stage", ncol = 3)
-# }
-
-
 network_plot <- function(eRegulon_md_df, tf1, tf2 = NA, tf3 = NA, mm10_tfs, only_tfs = TRUE) {
   tf_vec <- c(tf1, tf2, tf3)
   
