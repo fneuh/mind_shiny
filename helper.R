@@ -4,17 +4,24 @@ umap_plot_ggplot <- function(df_list, dataset, col_attr, split_attr = NA, point_
   if(split_attr == "nothing, show combined") {split_attr <- NA}
 
   ## select dataset:
-  if(dataset == "Inhibitory") {
-    df <- df_list$INH
-  } else if(dataset == "Inhibitory and Excitatory") {
-    df <- df_list$EI
+  if(dataset == "Embryonic Inhibitory") {
+    df <- df_list$INH_EMB
+  } else if(dataset == "Embryonic Inhibitory and Excitatory") {
+    df <- df_list$EI_EMB
+  } else if (dataset == "Neonatal Inhibitory") {
+    df <- df_list$INH_PN
   } else {
     print("No valid dataset specified")
     df <- NULL
   }
 
   ## plot aesthetics:
-  col_vec <- alphabet2(n = length(unique(df[, col_attr])))
+  if(length(unique(df[, col_attr])) <= 26) {
+    col_vec <- alphabet2(n = length(unique(df[, col_attr])))
+  } else {
+    col_vec <- c(alphabet2(n = 26), alphabet(n = length(unique(df[, col_attr])) - 26))
+  }
+  
   names(col_vec) <- unique(df[, col_attr])
   
   g <- ggplot(df, aes(x = UMAP2_1, y = UMAP2_2, color = !! sym(col_attr))) +
@@ -37,12 +44,15 @@ feature_plot_ggplot <- function(df_list, mtx_list, dataset, gene_name, split_att
   if(split_attr == "nothing, show combined") {split_attr <- NA}
 
   ## choose datasets
-  if(dataset == "Inhibitory") {
-    df <- df_list$INH
-    mtx <- mtx_list$INH
-  } else if(dataset == "Inhibitory and Excitatory") {
-    df <- df_list$EI
-    mtx <- mtx_list$EI
+  if(dataset == "Embryonic Inhibitory") {
+    df <- df_list$INH_EMB
+    mtx <- mtx_list$INH_EMB
+  } else if(dataset == "Embryonic Inhibitory and Excitatory") {
+    df <- df_list$EI_EMB
+    mtx <- mtx_list$EI_EMB
+  } else if (dataset == "Neonatal Inhibitory") {
+    df <- df_list$INH_PN
+    mtx <- mtx_list$INH_PN
   } else {
     print("No valid dataset specified")
     df <- NULL

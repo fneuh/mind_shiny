@@ -23,10 +23,12 @@ EI_umap_embedding$cluster <- factor(EI_umap_embedding$cluster, levels = c(
   "Gas1_Ldha","Hes1_Fabp7","Fabp7_Mt3","Hist1h1b_Top2a","Ccnd2_Nudt4","Nkx2-1_Lhx8","Npy_Nxph1","Sst_Maf","Nr2f2_Nr2f1","Isl1_Zfp503","Foxp1_Gucy1a3","Ebf1_Foxp1",
   "Neurog2_Rrm2","Neurog2_Eomes","Neurod2_Neurod6","Neurod6_Mef2c"
 ))
+EI_umap_embedding$class <- factor(EI_umap_embedding$class, levels = "Mitotic", "Inhibitory Neuron Precursor", "Excitatory Neuron Precursor")
+EI_umap_embedding$study <- factor(EI_umap_embedding$study, levels = c("Kotylarenko et al. 2024","Bandler et al. 2022","Di Bella et al. 2021"))
 EI_feature_df <- as.data.frame(EI_feature_df)
 
 
-## INH:
+## INH EMBRYONIC:
 INH_umap_embedding <- fread("data/inhibitory_datasets_umap2_df.tsv", sep = "\t")
 INH_feature_df <- fread("data/inhibitory_datasets_log_count_sub_mtx.csv")
 
@@ -35,16 +37,36 @@ INH_umap_embedding$cluster <- factor(INH_umap_embedding$cluster, levels = c(
   "Fabp7","Top2a","Fabp7_Ccnd2","Ube2c","Nkx2_1","Abracl","Npy","Maf_Sst","Snhg11_Lhx8","Snhg11","Tcf4_Nr2f2",
   "Tshz1","Six3_Gucy1a3","Gucy1a3","Ebf1_Isl1"
 ))
+INH_umap_embedding$experiment <- factor(INH_umap_embedding$experiment, levels = c("WT","CFSE","LINEAGE"))
+INH_umap_embedding$stage <- factor(INH_umap_embedding$stage, levels = c("E12","E14","E16","P0"))
+
 INH_feature_df <- as.data.frame(INH_feature_df)
+
+## INH POSTNATAL:
+INH_PN_umap_embedding <- fread("data/STICR_umap_df.tsv", sep = "\t")
+INH_PN_feature_df <- fread("data/STICR_log_count_sub_mtx.csv")
+
+INH_PN_umap_embedding <- as.data.frame(INH_PN_umap_embedding)
+INH_PN_umap_embedding$stage <- factor(INH_PN_umap_embedding$stage, levels = c("P5","P7","P8","P9","P11","P13/P14","P15"))
+INH_PN_umap_embedding$experiment <- factor(INH_PN_umap_embedding$experiment, levels = c(
+  "STICR E10.5 - P8","STICR E10.5 - P9","STICR E10.5 - P11",
+  "STICR E12.5 - P7","STICR E12.5 - P8","STICR E12.5 - P9","STICR E12.5 - P15",
+  "STICR E13.5 - P5","STICR E13.5 - P7","STICR E13.5 - P13/P14",
+  "STICR E14.5 - P7"
+))
+INH_PN_feature_df <- as.data.frame(INH_PN_feature_df)
+
 
 ## combine umap and feature dfs for easier handling:
 umap_embedding_list <- list(
-  "INH" = INH_umap_embedding,
-  "EI" = EI_umap_embedding
+  "INH_EMB" = INH_umap_embedding,
+  "EI_EMB" = EI_umap_embedding,
+  "INH_PN" = INH_PN_umap_embedding
 )
 feature_list <- list(
-  "INH" = INH_feature_df,
-  "EI" = EI_feature_df
+  "INH_EMB" = INH_feature_df,
+  "EI_EMB" = EI_feature_df,
+  "INH_PN" = INH_PN_feature_df
 )
 
 ## GRN:
@@ -59,6 +81,7 @@ mm10_tfs <- read.table("data/mm_mgi_tfs.txt"); mm10_tfs <- mm10_tfs$V1
 ui <- page_navbar(
   title = "Mouse Inhibitory Neuron Development",
   bg = "#b2abd2",
+  tags$head(tags$link(rel = "icon", type = "image/png", href = "CM_2025Logo.png")),
   
   ## ---------------------------------------------------------------------------
   ## HOME ##
@@ -68,16 +91,37 @@ ui <- page_navbar(
     
     h2("Mouse Inhibitory Neuron Development"),
     
-    p("This webserver accompanies this publication: "),
-    a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2024"),
-    h5("Abstract"),
-    p("Diverse types of GABAergic projection neurons and interneurons of the telencephalon derive from progenitors in a ventral germinal zone, called the ganglionic eminence. Using single-cell transcriptomics, chromatin accessibility profiling, lineage tracing, birthdating, heterochronic transplantation, and perturbation sequencing in mouse embryos, we investigated how progenitor competence influences the maturation and differentiation of these neurons. We found that the progression of neurogenesis over developmental time shapes maturation competence in ganglionic eminence progenitors, influencing how they progress into mature states. In contrast, differentiation competence, which defines the ability to produce diverse transcriptomic identities, remains largely unaffected by the stages of neurogenesis. Chromatin remodeling alongside a NFIB-driven regulatory gene module influences maturation competence in late-born neurons. These findings provide key insights into how transcriptional programs and chromatin accessibility govern neuronal maturation and the diversification of GABAergic neuron subtypes during neurodevelopment."),
-
+    layout_column_wrap(
+      card(
+        p("This webserver accompanies this publication: "),
+        a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2025"),
+        h4("About this resource"),
+        p("This browser enables interactive exploration of published single-cell RNA sequencing datasets covering mouse forebrain development, with a focus on inhibitory neuron populations."),
+        p("It includes:"),
+        
+        tags$ul(tags$li("Embryonic datasets from Bright, Kotlyarenko & Neuhaus et al. (2025), Di Bella & Habibi et al. (2021) and Bandler, Vitali & Delgado et al. (2021)"), tags$li("Neonatal dataset from Bandler, Vitali & Delgado et al. (2021)")),
+        
+        p("Together, these datasets span key stages of inhibitory neuron specification, migration, and maturation, across both dorsal and ventral forebrain structures. The browser provides access to gene expression profiles and gene regulatory network predictions."),
+        
+      ),
+      card(
+        img(src = "CM_FN_logo.png"),
+      )
+    ),
+    
+    #p("This webserver accompanies this publication: "),
+    #a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2025"),
+    #h4("About this resource"),
+    #p("This browser enables interactive exploration of published single-cell RNA sequencing datasets covering mouse forebrain development, with a focus on inhibitory neuron populations."),
+    #p("It includes:"),
+    #tags$ul(tags$li("Embryonic datasets from Bright, Kotlyarenko & Neuhaus et al. (2025), Di Bella & Habibi et al. (2021) and Bandler, Vitali & Delgado et al. (2021)"), tags$li("Neonatal dataset from Bandler, Vitali & Delgado et al. (2021)")),
+    #p("Together, these datasets span key stages of inhibitory neuron specification, migration, and maturation, across both dorsal and ventral forebrain structures. The browser provides access to gene expression profiles and gene regulatory network predictions."),
+    
     
     # layout_columns(
     #   card(
     #     p("This webserver accompanies this publication: "),
-    #     a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2024"),
+    #     a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2025"),
     #     h5("Abstract"),
     #     p("Diverse types of GABAergic projection neurons and interneurons of the telencephalon derive from progenitors in a ventral germinal zone, called the ganglionic eminence. Using single-cell transcriptomics, chromatin accessibility profiling, lineage tracing, birthdating, heterochronic transplantation, and perturbation sequencing in mouse embryos, we investigated how progenitor competence influences the maturation and differentiation of these neurons. We found that the progression of neurogenesis over developmental time shapes maturation competence in ganglionic eminence progenitors, influencing how they progress into mature states. In contrast, differentiation competence, which defines the ability to produce diverse transcriptomic identities, remains largely unaffected by the stages of neurogenesis. Chromatin remodeling alongside a NFIB-driven regulatory gene module influences maturation competence in late-born neurons. These findings provide key insights into how transcriptional programs and chromatin accessibility govern neuronal maturation and the diversification of GABAergic neuron subtypes during neurodevelopment.")
     #   ),
@@ -99,13 +143,13 @@ ui <- page_navbar(
     
     p("We provide the following panels to explore our data:"),
     h5("Dataset UMAPs"),
-    p("Explore structure of single-cell RNA-seq datasets. Visualize clusters, stages, experiments and studies. The data stems from this study and two additional datasets: Development of inhibitory neurons from Bandler, Vitali & Delgado et al. 2021 and development of excitatory neurons in somatosensory cortex from Di Bella & Habibi et al. 2021."),
+    p("Explore structure of single-cell RNA-seq datasets. Visualize cell clusters, cell classes, developmental stages, experiments and studies. The data stems from this study and two additional datasets: Development of inhibitory neurons from Bandler, Vitali & Delgado et al. (2021) and development of excitatory neurons in somatosensory cortex from Di Bella & Habibi et al. (2021)."),
     h5("RNA expression"),
-    p("Visualize expression of a gene of interest. UMAP plots can be split by cluster, stage, experiment and study. Genes were filtered for genes that are either highly-variable (n=5000) or having log-normalized expression greater than 0.5."),
+    p("Visualize expression of a gene of interest. UMAP plots can be split by cell cluster, cell class, developmental stage, experiment and study. Genes were filtered for genes that are either highly-variable (n=5000) or having log-normalized expression greater than 0.5."),
     h5("Tracks"),
     p("Data from scATAC-seq and NFIB CUT&RUN experiments can be explored in UCSC genome browser"),
     h5("Network"),
-    p("Explore interactions between up to 3 TFs and their direct target genes.")
+    p("Explore interactions between up to 3 TFs and their direct target genes. Gene-regulatory networks were precdited using SCENIC+: González-Blas & De Winter et al. (2023).")
   ),
   
   
@@ -122,19 +166,19 @@ ui <- page_navbar(
         selectInput(
           inputId = "umap_dataset",
           label = "Choose dataset:",
-          choices = c("Inhibitory", "Inhibitory and Excitatory"),
-          selected = "Inhibitory"
+          choices = c("Embryonic Inhibitory", "Embryonic Inhibitory and Excitatory","Neonatal Inhibitory"),
+          selected = "Embryonic Inhibitory"
         ),
         selectInput(
           inputId = "umap_color_by",
           label = "Annotate cells by:",
-          choices = c("stage", "cluster", "experiment", "study"),
+          choices = c("stage", "cluster", "experiment", "study","class"),
           selected = "cluster"
         ),
         selectInput(
           inputId = "umap_split_by",
           label = "Split plots by:",
-          choices = c("nothing, show combined", "stage", "cluster", "experiment","study"),
+          choices = c("nothing, show combined", "stage", "cluster", "experiment","study","class"),
           selected = "nothing, show combined"
         ),
       submitButton("Update View", icon("refresh"))
@@ -162,8 +206,8 @@ ui <- page_navbar(
         selectInput(
           inputId = "feature_dataset",
           label = "Choose dataset:",
-          choices = c("Inhibitory", "Inhibitory and Excitatory"),
-          selected = "Inhibitory"
+          choices = c("Embryonic Inhibitory", "Embryonic Inhibitory and Excitatory","Neonatal Inhibitory"),
+          selected = "Embryonic Inhibitory"
         ),
         textInput(
           inputId = "gene",
@@ -173,14 +217,14 @@ ui <- page_navbar(
         selectInput(
           inputId = "feature_split_by",
           label = "Split plots by:",
-          choices = c("nothing, show combined", "stage", "cluster", "experiment","study"),
+          choices = c("nothing, show combined", "stage", "cluster", "experiment","study","class"),
           selected = "nothing, show combined"
         ),
         submitButton("Update View", icon("refresh"))
       ),
     
       card(
-        card_header("Scaled Expression for Feature"),
+        card_header("Normalized Expression for Feature"),
         plotOutput("feature")
       ),
     
@@ -263,7 +307,7 @@ server <- function(input, output) {
 
   ## 3: TRACKS
   
-  ## todo
+  ## static content
   
   ## 4: NETWORK
   output$network <- renderPlot({
