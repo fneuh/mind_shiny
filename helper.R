@@ -46,21 +46,30 @@ feature_plot_ggplot <- function(df_list, mtx_list, dataset, gene_name, split_att
   ## choose datasets
   if(dataset == "Embryonic Inhibitory") {
     df <- df_list$INH_EMB
-    mtx <- mtx_list$INH_EMB
+    mtx_file <- mtx_list$INH_EMB
   } else if(dataset == "Embryonic Inhibitory and Excitatory") {
     df <- df_list$EI_EMB
-    mtx <- mtx_list$EI_EMB
+    mtx_file <- mtx_list$EI_EMB
   } else if (dataset == "Neonatal Inhibitory") {
     df <- df_list$INH_PN
-    mtx <- mtx_list$INH_PN
+    mtx_file <- mtx_list$INH_PN
   } else {
     print("No valid dataset specified")
     df <- NULL
-    mtx <- NULL
+    mtx_file <- NULL
   }
   
   ## add expression to df:
-  df[, gene_name] <- mtx[, gene_name]
+  gene_name_vec <- as.vector(mtx_file$"gene_names/gene_name_mtx")
+  if(gene_name %in% gene_name_vec) {
+    gene_idx <- which(gene_name_vec == gene_name)
+  } else {
+    gene_idx <- NULL
+    return("Gene not found in this dataset.")
+  }
+  
+  gene_expr_vec <- h5read(file = mtx_file, name = "log_expression/log_expr_mtx", index = list(NULL, gene_idx))
+  df[, gene_name] <- gene_expr_vec
   
   g <- ggplot(df, aes(x = UMAP2_1, y = UMAP2_2, color = !! sym(gene_name))) +
     geom_point(size = point_size) +
