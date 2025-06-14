@@ -50,6 +50,7 @@ INH_PN_umap_embedding <- fread("data/STICR_umap_df.tsv", sep = "\t")
 #INH_PN_feature_df <- fread("data/STICR_log_count_sub_mtx.csv")
 INH_PN_feature_file <- H5Fopen("data/STICR_datasets.h5")
 
+
 INH_PN_umap_embedding <- as.data.frame(INH_PN_umap_embedding)
 INH_PN_umap_embedding$stage <- factor(INH_PN_umap_embedding$stage, levels = c("P5","P7","P8","P9","P11","P13/P14","P15"))
 INH_PN_umap_embedding$experiment <- factor(INH_PN_umap_embedding$experiment, levels = c(
@@ -73,12 +74,12 @@ feature_file_list <- list(
   "INH_PN" = INH_PN_feature_file
 )
 
-all_gene_names <- unique(c(
-  as.vector(INH_feature_file$"gene_names/gene_name_mtx"),
-  as.vector(EI_feature_file$"gene_names/gene_name_mtx"),
-  as.vector(INH_PN_feature_file$"gene_names/gene_name_mtx")
-))
-all_gene_names <- all_gene_names[order(all_gene_names)]
+# all_gene_names <- unique(c(
+#   as.vector(INH_feature_file$"gene_names/gene_name_mtx"),
+#   as.vector(EI_feature_file$"gene_names/gene_name_mtx"),
+#   as.vector(INH_PN_feature_file$"gene_names/gene_name_mtx")
+# ))
+# all_gene_names <- all_gene_names[order(all_gene_names)]
 
 ## GRN:
 eRegulon_md_df <- read.table("data/eRegulon_metadata_filtered.tsv", sep = "\t", h=T)
@@ -227,11 +228,11 @@ ui <- page_navbar(
           choices = c("Embryonic Inhibitory", "Embryonic Inhibitory and Excitatory","Neonatal Inhibitory"),
           selected = "Embryonic Inhibitory"
         ),
-        selectInput(
+        textInput(
           inputId = "gene",
           label = "Select your gene of interest:",
-          choices = all_gene_names,
-          selected = "Nfib"
+          #choices = all_gene_names,
+          value = "Nfib"
         ),
         selectInput(
           inputId = "feature_split_by",
