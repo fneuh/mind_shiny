@@ -154,13 +154,13 @@ ui <- page_navbar(
     # ),
     
     p("We provide the following panels to explore our data:"),
-    
     tags$ul(
       tags$li(tags$b("Dataset UMAPs:"), " Explore structure of single-cell RNA-seq datasets. Visualize cell clusters, cell classes, developmental stages, experiments and studies. The data stems from this study and two additional datasets: Development of inhibitory neurons from Bandler, Vitali & Delgado et al. (2021) and development of excitatory neurons in somatosensory cortex from Di Bella & Habibi et al. (2021)."),
-      tags$li(tags$b("RNA expression:"), " Visualize expression of a gene of interest. UMAP plots can be split by cell cluster, cell class, developmental stage, experiment and study. Genes were filtered for genes that are either highly-variable (n=5000) or having log-normalized expression greater than 0.5."),
+      tags$li(tags$b("RNA expression:"), " Visualize expression of a gene of interest. UMAP plots can be split by cell cluster, cell class, developmental stage, experiment and study."),
       tags$li(tags$b("Tracks:"), " Data from scATAC-seq and NFIB CUT&RUN experiments can be explored in UCSC genome browser"),
       tags$li(tags$b("Network:"), " Explore interactions between up to 3 TFs and their direct target genes. Gene-regulatory networks were precdited using SCENIC+: González-Blas & De Winter et al. (2023).")
     ),
+    p("Source code for this app is available on ", a(href="https://github.com/fneuh/mind_shiny", "Github"), "."),
     
     #p("Explore structure of single-cell RNA-seq datasets. Visualize cell clusters, cell classes, developmental stages, experiments and studies. The data stems from this study and two additional datasets: Development of inhibitory neurons from Bandler, Vitali & Delgado et al. (2021) and development of excitatory neurons in somatosensory cortex from Di Bella & Habibi et al. (2021)."),
     #p("RNA expression"),
