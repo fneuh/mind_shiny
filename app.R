@@ -16,7 +16,6 @@ source("helper.R")
 ## read pre-processed tables:
 ## EI:
 EI_umap_embedding <- fread("data/EI_merged_umap2_df.tsv", sep = "\t")
-#EI_feature_df <- fread("data/EI_merged_log_count_sub_mtx.csv")
 EI_feature_file <- H5Fopen("data/EI_merged_datasets.h5")
 
 EI_umap_embedding <- as.data.frame(EI_umap_embedding)
@@ -27,12 +26,10 @@ EI_umap_embedding$cluster <- factor(EI_umap_embedding$cluster, levels = c(
 EI_umap_embedding$class <- factor(EI_umap_embedding$class, levels = "Mitotic", "Inhibitory Neuron Precursor", "Excitatory Neuron Precursor")
 EI_umap_embedding$study <- factor(EI_umap_embedding$study, levels = c("Bright et al. 2025","Bandler et al. 2022","Di Bella et al. 2021"))
 
-#EI_feature_df <- as.data.frame(EI_feature_df)
 
 
 ## INH EMBRYONIC:
 INH_umap_embedding <- fread("data/inhibitory_datasets_umap2_df.tsv", sep = "\t")
-#INH_feature_df <- fread("data/inhibitory_datasets_log_count_sub_mtx.csv")
 INH_feature_file <- H5Fopen("data/inhibitory_datasets.h5")
 
 INH_umap_embedding <- as.data.frame(INH_umap_embedding)
@@ -43,11 +40,9 @@ INH_umap_embedding$cluster <- factor(INH_umap_embedding$cluster, levels = c(
 INH_umap_embedding$experiment <- factor(INH_umap_embedding$experiment, levels = c("WT","CFSE","LINEAGE"))
 INH_umap_embedding$stage <- factor(INH_umap_embedding$stage, levels = c("E12","E14","E16","P0"))
 
-#INH_feature_df <- as.data.frame(INH_feature_df)
 
 ## INH POSTNATAL:
 INH_PN_umap_embedding <- fread("data/STICR_umap_df.tsv", sep = "\t")
-#INH_PN_feature_df <- fread("data/STICR_log_count_sub_mtx.csv")
 INH_PN_feature_file <- H5Fopen("data/STICR_datasets.h5")
 
 
@@ -59,7 +54,7 @@ INH_PN_umap_embedding$experiment <- factor(INH_PN_umap_embedding$experiment, lev
   "STICR E13.5 - P5","STICR E13.5 - P7","STICR E13.5 - P13/P14",
   "STICR E14.5 - P7"
 ))
-#INH_PN_feature_df <- as.data.frame(INH_PN_feature_df)
+
 
 
 ## combine umap and feature dfs for easier handling:
@@ -103,55 +98,34 @@ ui <- page_navbar(
     
     h2("Mouse Inhibitory Neuron Development"),
     
-    layout_column_wrap(
-      card(
-        p("This webserver accompanies this publication: "),
-        a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotlyarenko & Neuhaus et al. 2025"),
-        h4("About this resource"),
-        p("This browser enables interactive exploration of published single-cell RNA sequencing datasets covering mouse forebrain development, with a focus on inhibitory neuron populations."),
-        p("It includes:"),
-        
-        tags$ul(tags$li("Embryonic datasets from Bright, Kotlyarenko & Neuhaus et al. (2025), Di Bella & Habibi et al. (2021) and Bandler, Vitali & Delgado et al. (2021)"), tags$li("Neonatal dataset from Bandler, Vitali & Delgado et al. (2021)")),
-        
-        p("Together, these datasets span key stages of inhibitory neuron specification, migration, and maturation, across both dorsal and ventral forebrain structures. The browser provides access to gene expression profiles and gene regulatory network predictions."),
-        
-      ),
-      card(
-        img(src = "CM_FN_logo.png"),
-      )
-    ),
-    
-    #p("This webserver accompanies this publication: "),
-    #a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2025"),
-    #h4("About this resource"),
-    #p("This browser enables interactive exploration of published single-cell RNA sequencing datasets covering mouse forebrain development, with a focus on inhibitory neuron populations."),
-    #p("It includes:"),
-    #tags$ul(tags$li("Embryonic datasets from Bright, Kotlyarenko & Neuhaus et al. (2025), Di Bella & Habibi et al. (2021) and Bandler, Vitali & Delgado et al. (2021)"), tags$li("Neonatal dataset from Bandler, Vitali & Delgado et al. (2021)")),
-    #p("Together, these datasets span key stages of inhibitory neuron specification, migration, and maturation, across both dorsal and ventral forebrain structures. The browser provides access to gene expression profiles and gene regulatory network predictions."),
-    
-    
-    # layout_columns(
+    # layout_column_wrap(
     #   card(
     #     p("This webserver accompanies this publication: "),
-    #     a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotylarenko & Neuhaus et al. 2025"),
-    #     h5("Abstract"),
-    #     p("Diverse types of GABAergic projection neurons and interneurons of the telencephalon derive from progenitors in a ventral germinal zone, called the ganglionic eminence. Using single-cell transcriptomics, chromatin accessibility profiling, lineage tracing, birthdating, heterochronic transplantation, and perturbation sequencing in mouse embryos, we investigated how progenitor competence influences the maturation and differentiation of these neurons. We found that the progression of neurogenesis over developmental time shapes maturation competence in ganglionic eminence progenitors, influencing how they progress into mature states. In contrast, differentiation competence, which defines the ability to produce diverse transcriptomic identities, remains largely unaffected by the stages of neurogenesis. Chromatin remodeling alongside a NFIB-driven regulatory gene module influences maturation competence in late-born neurons. These findings provide key insights into how transcriptional programs and chromatin accessibility govern neuronal maturation and the diversification of GABAergic neuron subtypes during neurodevelopment.")
+    #     a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotlyarenko & Neuhaus et al. 2025"),
+    #     h4("About this resource"),
+    #     p("This browser enables interactive exploration of published single-cell RNA sequencing datasets covering mouse forebrain development, with a focus on inhibitory neuron populations."),
+    #     p("It includes:"),
+    #     
+    #     tags$ul(tags$li("Embryonic datasets from Bright, Kotlyarenko & Neuhaus et al. (2025), Di Bella & Habibi et al. (2021) and Bandler, Vitali & Delgado et al. (2021)"), tags$li("Neonatal dataset from Bandler, Vitali & Delgado et al. (2021)")),
+    #     
+    #     p("Together, these datasets span key stages of inhibitory neuron specification, migration, and maturation, across both dorsal and ventral forebrain structures. The browser provides access to gene expression profiles and gene regulatory network predictions."),
+    #     
     #   ),
-    # 
     #   card(
-    #     img(src = "ge_scheme.png")
-    #   ),
-    #   col_widths = breakpoints(
-    #     sm = c(4,1),
-    #     md = c(6,3),
-    #     lg = c(8,4)
-    #   ),
-    #   row_heights = breakpoints(
-    #     sm = c(20),
-    #     md = c(16),
-    #     lg = c(12)
+    #     img(src = "CM_FN_logo.png"),
     #   )
     # ),
+    
+    #img(src = "CM_FN_logo.png"),
+    
+    p("This webserver accompanies this publication: "),
+    a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotlyarenko & Neuhaus et al. 2025"),
+    h4("About this resource"),
+    p("This browser enables interactive exploration of published single-cell RNA sequencing datasets covering mouse forebrain development, with a focus on inhibitory neuron populations."),
+    p("It includes:"),
+    tags$ul(tags$li("Embryonic datasets from Bright, Kotlyarenko & Neuhaus et al. (2025), Di Bella & Habibi et al. (2021) and Bandler, Vitali & Delgado et al. (2021)"), tags$li("Neonatal dataset from Bandler, Vitali & Delgado et al. (2021)")),
+    p("Together, these datasets span key stages of inhibitory neuron specification, migration, and maturation, across both dorsal and ventral forebrain structures. The browser provides access to gene expression profiles and gene regulatory network predictions."),
+    
     
     p("We provide the following panels to explore our data:"),
     tags$ul(
@@ -160,15 +134,8 @@ ui <- page_navbar(
       tags$li(tags$b("Tracks:"), " Data from scATAC-seq and NFIB CUT&RUN experiments can be explored in UCSC genome browser"),
       tags$li(tags$b("Network:"), " Explore interactions between up to 3 TFs and their direct target genes. Gene-regulatory networks were precdited using SCENIC+: González-Blas & De Winter et al. (2023).")
     ),
-    p("Source code for this app is available on ", a(href="https://github.com/fneuh/mind_shiny", "Github"), "."),
     
-    #p("Explore structure of single-cell RNA-seq datasets. Visualize cell clusters, cell classes, developmental stages, experiments and studies. The data stems from this study and two additional datasets: Development of inhibitory neurons from Bandler, Vitali & Delgado et al. (2021) and development of excitatory neurons in somatosensory cortex from Di Bella & Habibi et al. (2021)."),
-    #p("RNA expression"),
-    #p("Visualize expression of a gene of interest. UMAP plots can be split by cell cluster, cell class, developmental stage, experiment and study. Genes were filtered for genes that are either highly-variable (n=5000) or having log-normalized expression greater than 0.5."),
-    #p("Tracks"),
-    #p("Data from scATAC-seq and NFIB CUT&RUN experiments can be explored in UCSC genome browser"),
-    #p("Network"),
-    #p("Explore interactions between up to 3 TFs and their direct target genes. Gene-regulatory networks were precdited using SCENIC+: González-Blas & De Winter et al. (2023).")
+    p("Source code for this app is available on ", a(href="https://github.com/fneuh/mind_shiny", "Github"), "."),
   ),
   
   

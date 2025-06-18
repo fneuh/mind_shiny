@@ -32,6 +32,7 @@ umap_plot_ggplot <- function(df_list, dataset, col_attr, split_attr = NA, point_
           panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
           legend.text = element_text(size=15), legend.title=element_text(size=15), plot.title = element_text(size = 15)) +
     ggtitle(col_attr) +
+    xlab("UMAP1") + ylab("UMAP2") +
     guides(color = guide_legend(override.aes = list(size = 2)))
   if(!is.na(split_attr)) {
     g <- g +
@@ -78,6 +79,7 @@ feature_plot_ggplot <- function(df_list, mtx_list, dataset, gene_name, split_att
     theme(panel.border = element_blank(), panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
           legend.title=element_text(size=15), plot.title = element_text(size = 15)) +
+    xlab("UMAP1") + ylab("UMAP2") +
     ggtitle(gene_name)
   if(!is.na(split_attr)) {
     g <- g +

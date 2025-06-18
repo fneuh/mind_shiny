@@ -31,39 +31,11 @@ umap_embedding$class <- Inhibitory_datasets$Main_splits[rownames(umap_embedding)
 umap_embedding$class[umap_embedding$class %in% c("Projections","Interneurons")] <- "Neuronal Precursor"
 umap_embedding$cellID <- rownames(umap_embedding)
 
-# 
-#umap_plot_ggplot(umap_embedding, col_attr = "cluster", split_attr = "experiment", point_size = 0.2)
+
 write.table(umap_embedding, "data/inhibitory_datasets_umap2_df.tsv", sep = "\t", quote = FALSE, row.names = FALSE)
-
-
-# ## df for feature plot:
-# log_count_mtx <- as.data.table(t(GetAssayData(Inhibitory_datasets, assay = "RNA", slot = "data")))
-# 
-# variable_genes <- VariableFeatures(FindVariableFeatures(Inhibitory_datasets, nfeatures = 5000))
-# mean_expr <- apply(log_count_mtx, 2, mean)
-# th <- 0.5
-# sum(mean_expr > th)
-# expr_high_genes <- colnames(log_count_mtx)[mean_expr > th]
-# genes_sub <- unique(c(variable_genes, expr_high_genes))
-# 
-# 
-# 
-# fwrite(log_count_mtx, file = "data/inhibitory_datasets_log_count_mtx.csv", sep = ",")
-# #writeMM(log_count_mtx, file = "data/inhibitory_datasets_log_count_mtx.mtx")
-# #system("gzip data/inhibitory_datasets_log_count_mtx.mtx")
-# 
-# log_count_HVG_mtx <- log_count_mtx[, colnames(log_count_mtx) %in% VariableFeatures(Inhibitory_datasets), with = FALSE]
-# fwrite(log_count_HVG_mtx, file = "data/inhibitory_datasets_log_count_HVG_mtx.csv", sep = ",")
-# 
-# 
-# log_count_sub_mtx <- log_count_mtx[, colnames(log_count_mtx) %in% genes_sub, with = FALSE]
-# fwrite(log_count_sub_mtx, file = "data/inhibitory_datasets_log_count_sub_mtx.csv", sep = ",")
-# 
-# scaled_mtx <- as.data.table(t(GetAssayData(Inhibitory_datasets, assay = "RNA", slot = "scale.data")))
-# fwrite(scaled_mtx, file = "data/inhibitory_datasets_scaled_count_mtx.csv", sep = ",")
-
 ## save expression values as hdf5:
 log_count_mtx <- t(GetAssayData(Inhibitory_datasets, assay = "RNA", slot = "data"))
+
 
 if(file.exists("data/inhibitory_datasets.h5")) {
   system("rm data/inhibitory_datasets.h5")
@@ -85,21 +57,6 @@ h5createDataset("data/inhibitory_datasets.h5", "log_expression/log_expr_mtx", c(
 
 h5write(matrix(log_count_mtx, ncol = ncol(log_count_mtx)), "data/inhibitory_datasets.h5", "log_expression/log_expr_mtx")
 h5closeAll()
-
-
-
-## for later:
-# start <- Sys.time()
-# h5f_serial = H5Fopen("data/inhibitory_datasets.h5")
-# 
-# gene_name_vec <- as.vector(h5f_serial$"gene_names/gene_name_mtx")
-# gene <- "Nfib"
-# gene_idx <- which(gene_name_vec == gene)
-# 
-# gene_expr_vec <- h5read(file = h5f_serial, name = "log_expression/log_expr_mtx", index = list(NULL, gene_idx))
-# end <- Sys.time()
-# end - start
-
 
 
 
@@ -174,26 +131,6 @@ umap_embedding$experiment <- factor(umap_embedding$experiment, levels = c(
 
 write.table(umap_embedding, "data/STICR_umap_df.tsv", sep = "\t", quote = FALSE, row.names = FALSE)
 
-# ## df for feature plot:
-# log_count_mtx <- as.data.table(t(GetAssayData(sticr_seurat, assay = "RNA", slot = "data")))
-# 
-# variable_genes <- VariableFeatures(FindVariableFeatures(sticr_seurat, nfeatures = 5000))
-# mean_expr <- apply(log_count_mtx, 2, mean)
-# th <- 0.5
-# sum(mean_expr > th)
-# expr_high_genes <- colnames(log_count_mtx)[mean_expr > th]
-# genes_sub <- unique(c(variable_genes, expr_high_genes))
-# 
-# fwrite(log_count_mtx, file = "data/STICR_log_count_mtx.csv", sep = ",")
-# 
-# log_count_HVG_mtx <- log_count_mtx[, colnames(log_count_mtx) %in% VariableFeatures(sticr_seurat), with = FALSE]
-# fwrite(log_count_HVG_mtx, file = "data/STICR_log_count_HVG_mtx.csv", sep = ",")
-# 
-# log_count_sub_mtx <- log_count_mtx[, colnames(log_count_mtx) %in% genes_sub, with = FALSE]
-# fwrite(log_count_sub_mtx, file = "data/STICR_log_count_sub_mtx.csv", sep = ",")
-# 
-# scaled_mtx <- as.data.table(t(GetAssayData(sticr_seurat, assay = "RNA", slot = "scale.data")))
-# fwrite(scaled_mtx, file = "data/STICR_scaled_count_mtx.csv", sep = ",")
 
 ## save expression values as hdf5:
 log_count_mtx <- t(GetAssayData(sticr_seurat, assay = "RNA", slot = "data"))
@@ -250,36 +187,12 @@ class_vec <- c("Hes1_Fabp7" = "Mitotic", "Neurod2_Neurod6" = "Excitatory Neuron 
                "Hist1h1b_Top2a" = "Mitotic", "Ebf1_Foxp1" = "Inhibitory Neuron Precursor", "Nkx2-1_Lhx8" = "Inhibitory Neuron Precursor", "Isl1_Zfp503" = "Inhibitory Neuron Precursor", "Sst_Maf" = "Inhibitory Neuron Precursor",
                "Foxp1_Gucy1a3" = "Inhibitory Neuron Precursor")
 umap_embedding$class <- class_vec[EI_seurat$Gene_Annotation]
-umap_embedding$class <- factor(umap_embedding$class, levels = "Mitotic", "Inhibitory Neuron Precursor", "Excitatory Neuron Precursor")
+umap_embedding$class <- factor(umap_embedding$class, levels = c("Mitotic", "Inhibitory Neuron Precursor", "Excitatory Neuron Precursor"))
 umap_embedding$cellID <- rownames(umap_embedding)
 
-# 
-#umap_plot_ggplot(umap_embedding, col_attr = "cluster", split_attr = "study", point_size = 0.2)
+
 write.table(umap_embedding, "data/EI_merged_umap2_df.tsv", sep = "\t", quote = FALSE, row.names = FALSE)
 
-# ## df for feature plot:
-# 
-# log_count_mtx <- as.data.table(t(GetAssayData(EI_seurat, assay = "RNA", slot = "data")))
-# 
-# variable_genes <- VariableFeatures(FindVariableFeatures(EI_seurat, nfeatures = 5000))
-# mean_expr <- apply(log_count_mtx, 2, mean)
-# th <- 0.5
-# sum(mean_expr > th)
-# expr_high_genes <- colnames(log_count_mtx)[mean_expr > th]
-# genes_sub <- unique(c(variable_genes, expr_high_genes))
-# 
-# fwrite(log_count_mtx, file = "data/EI_merged_log_count_mtx.csv", sep = ",")
-# #writeMM(log_count_mtx, file = "data/EI_merged_log_count_mtx.mtx")
-# #system("gzip data/inhibitory_datasets_log_count_mtx.mtx")
-# 
-# log_count_HVG_mtx <- log_count_mtx[, colnames(log_count_mtx) %in% VariableFeatures(EI_seurat), with = FALSE]
-# fwrite(log_count_HVG_mtx, file = "data/EI_merged_log_count_HVG_mtx.csv", sep = ",")
-# 
-# log_count_sub_mtx <- log_count_mtx[, colnames(log_count_mtx) %in% genes_sub, with = FALSE]
-# fwrite(log_count_sub_mtx, file = "data/EI_merged_log_count_sub_mtx.csv", sep = ",")
-# 
-# scaled_mtx <- as.data.table(t(GetAssayData(EI_seurat, assay = "RNA", slot = "scale.data")))
-# fwrite(scaled_mtx, file = "data/EI_merged_scaled_count_mtx.csv", sep = ",")
 
 ## save expression values as hdf5:
 log_count_mtx <- t(GetAssayData(EI_seurat, assay = "RNA", slot = "data"))
