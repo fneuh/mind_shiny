@@ -28,7 +28,8 @@ umap_embedding$cluster <- factor(umap_embedding$cluster, levels = c(
   "Tshz1","Six3_Gucy1a3","Gucy1a3","Ebf1_Isl1"
 ))
 umap_embedding$class <- Inhibitory_datasets$Main_splits[rownames(umap_embedding)]
-umap_embedding$class[umap_embedding$class %in% c("Projections","Interneurons")] <- "Neuronal Precursor"
+umap_embedding$class[umap_embedding$class == "Interneurons"] <- "Interneuron Precursor"
+umap_embedding$class[umap_embedding$class == "Projections"] <- "Inhibitory Projection Neuron Precursor"
 umap_embedding$cellID <- rownames(umap_embedding)
 
 
@@ -182,11 +183,13 @@ umap_embedding$cluster <- factor(umap_embedding$cluster, levels = c(
   "Neurog2_Rrm2","Neurog2_Eomes","Neurod2_Neurod6","Neurod6_Mef2c"
 ))
 
-class_vec <- c("Hes1_Fabp7" = "Mitotic", "Neurod2_Neurod6" = "Excitatory Neuron Precursor", "Neurog2_Rrm2" = "Mitotic", "Gas1_Ldha" = "Mitotic", "Fabp7_Mt3" = "Mitotic", 
-               "Neurod6_Mef2c" = "Excitatory Neuron Precursor", "Neurog2_Eomes" = "Mitotic", "Ccnd2_Nudt4" = "Mitotic", "Npy_Nxph1" = "Inhibitory Neuron Precursor", "Nr2f2_Nr2f1" = "Inhibitory Neuron Precursor", 
-               "Hist1h1b_Top2a" = "Mitotic", "Ebf1_Foxp1" = "Inhibitory Neuron Precursor", "Nkx2-1_Lhx8" = "Inhibitory Neuron Precursor", "Isl1_Zfp503" = "Inhibitory Neuron Precursor", "Sst_Maf" = "Inhibitory Neuron Precursor",
+class_vec <- c("Hes1_Fabp7" = "Mitotic", "Neurod2_Neurod6" = "Excitatory Neuron Precursor", "Neurog2_Rrm2" = "Mitotic", 
+               "Gas1_Ldha" = "Mitotic", "Fabp7_Mt3" = "Mitotic", "Neurod6_Mef2c" = "Excitatory Neuron Precursor", 
+               "Neurog2_Eomes" = "Mitotic", "Ccnd2_Nudt4" = "Inhibitory Neuron Precursor", "Npy_Nxph1" = "Inhibitory Neuron Precursor", 
+               "Nr2f2_Nr2f1" = "Inhibitory Neuron Precursor", "Hist1h1b_Top2a" = "Mitotic", "Ebf1_Foxp1" = "Inhibitory Neuron Precursor", 
+               "Nkx2-1_Lhx8" = "Inhibitory Neuron Precursor", "Isl1_Zfp503" = "Inhibitory Neuron Precursor", "Sst_Maf" = "Inhibitory Neuron Precursor",
                "Foxp1_Gucy1a3" = "Inhibitory Neuron Precursor")
-umap_embedding$class <- class_vec[EI_seurat$Gene_Annotation]
+umap_embedding$class <- class_vec[umap_embedding$cluster]
 umap_embedding$class <- factor(umap_embedding$class, levels = c("Mitotic", "Inhibitory Neuron Precursor", "Excitatory Neuron Precursor"))
 umap_embedding$cellID <- rownames(umap_embedding)
 

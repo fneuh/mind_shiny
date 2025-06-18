@@ -23,7 +23,7 @@ EI_umap_embedding$cluster <- factor(EI_umap_embedding$cluster, levels = c(
   "Gas1_Ldha","Hes1_Fabp7","Fabp7_Mt3","Hist1h1b_Top2a","Ccnd2_Nudt4","Nkx2-1_Lhx8","Npy_Nxph1","Sst_Maf","Nr2f2_Nr2f1","Isl1_Zfp503","Foxp1_Gucy1a3","Ebf1_Foxp1",
   "Neurog2_Rrm2","Neurog2_Eomes","Neurod2_Neurod6","Neurod6_Mef2c"
 ))
-EI_umap_embedding$class <- factor(EI_umap_embedding$class, levels = "Mitotic", "Inhibitory Neuron Precursor", "Excitatory Neuron Precursor")
+EI_umap_embedding$class <- factor(EI_umap_embedding$class, levels = c("Mitotic", "Inhibitory Neuron Precursor", "Excitatory Neuron Precursor"))
 EI_umap_embedding$study <- factor(EI_umap_embedding$study, levels = c("Bright et al. 2025","Bandler et al. 2022","Di Bella et al. 2021"))
 
 
@@ -39,6 +39,7 @@ INH_umap_embedding$cluster <- factor(INH_umap_embedding$cluster, levels = c(
 ))
 INH_umap_embedding$experiment <- factor(INH_umap_embedding$experiment, levels = c("WT","CFSE","LINEAGE"))
 INH_umap_embedding$stage <- factor(INH_umap_embedding$stage, levels = c("E12","E14","E16","P0"))
+INH_umap_embedding$class <- factor(INH_umap_embedding$class, levels = c("Mitotic","Interneuron Precursor","Inhibitory Projection Neuron Precursor"))
 
 
 ## INH POSTNATAL:
