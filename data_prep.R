@@ -178,10 +178,10 @@ umap_embedding$study <- db_map[umap_embedding$study]
 umap_embedding$study <- factor(umap_embedding$study, levels = c("Bright et al. 2025","Bandler et al. 2022","Di Bella et al. 2021"))
 
 umap_embedding$cluster <- EI_seurat$Gene_Annotation
-umap_embedding$cluster <- factor(umap_embedding$cluster, levels = c(
-  "Gas1_Ldha","Hes1_Fabp7","Fabp7_Mt3","Hist1h1b_Top2a","Ccnd2_Nudt4","Nkx2-1_Lhx8","Npy_Nxph1","Sst_Maf","Nr2f2_Nr2f1","Isl1_Zfp503","Foxp1_Gucy1a3","Ebf1_Foxp1",
-  "Neurog2_Rrm2","Neurog2_Eomes","Neurod2_Neurod6","Neurod6_Mef2c"
-))
+# umap_embedding$cluster <- factor(umap_embedding$cluster, levels = c(
+#   "Gas1_Ldha","Hes1_Fabp7","Fabp7_Mt3","Hist1h1b_Top2a","Ccnd2_Nudt4","Nkx2-1_Lhx8","Npy_Nxph1","Sst_Maf","Nr2f2_Nr2f1","Isl1_Zfp503","Foxp1_Gucy1a3","Ebf1_Foxp1",
+#   "Neurog2_Rrm2","Neurog2_Eomes","Neurod2_Neurod6","Neurod6_Mef2c"
+# ))
 
 class_vec <- c("Hes1_Fabp7" = "Mitotic", "Neurod2_Neurod6" = "Excitatory Neuron Precursor", "Neurog2_Rrm2" = "Mitotic", 
                "Gas1_Ldha" = "Mitotic", "Fabp7_Mt3" = "Mitotic", "Neurod6_Mef2c" = "Excitatory Neuron Precursor", 
@@ -190,7 +190,7 @@ class_vec <- c("Hes1_Fabp7" = "Mitotic", "Neurod2_Neurod6" = "Excitatory Neuron 
                "Nkx2-1_Lhx8" = "Inhibitory Neuron Precursor", "Isl1_Zfp503" = "Inhibitory Neuron Precursor", "Sst_Maf" = "Inhibitory Neuron Precursor",
                "Foxp1_Gucy1a3" = "Inhibitory Neuron Precursor")
 umap_embedding$class <- class_vec[umap_embedding$cluster]
-umap_embedding$class <- factor(umap_embedding$class, levels = c("Mitotic", "Inhibitory Neuron Precursor", "Excitatory Neuron Precursor"))
+#umap_embedding$class <- factor(umap_embedding$class, levels = c("Mitotic", "Inhibitory Neuron Precursor", "Excitatory Neuron Precursor"))
 umap_embedding$cellID <- rownames(umap_embedding)
 
 
