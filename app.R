@@ -6,6 +6,7 @@ library(bslib)
 
 library(igraph)
 library(ggplot2)
+library(ggrepel)
 library(pals)
 library(data.table)
 library(rhdf5)

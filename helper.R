@@ -24,6 +24,18 @@ umap_plot_ggplot <- function(df_list, dataset, col_attr, split_attr = NA, point_
   
   names(col_vec) <- unique(df[, col_attr])
   
+  if(length(unique(df[, col_attr])) > 10) {
+    ## add text labels to central cells:
+    df$text_label <- NA
+    for(x in unique(df[, col_attr])) {
+      df_sub <- df[df[, col_attr] == x, ]
+      centroid <- c(mean(df_sub$UMAP2_1), mean(df_sub$UMAP2_2))
+      dist_vec <- apply(df_sub, 1, function(y) { sqrt(sum((centroid - c(as.numeric(y['UMAP2_1']), as.numeric(y['UMAP2_2'])))^2))})
+      closest_cell <- names(which(dist_vec == min(dist_vec)))
+      df[closest_cell, "text_label"] <- x
+    }
+  }
+  
   g <- ggplot(df, aes(x = UMAP2_1, y = UMAP2_2, color = !! sym(col_attr))) +
     geom_point(size = point_size) +
     scale_color_manual(values = col_vec) +
@@ -34,6 +46,13 @@ umap_plot_ggplot <- function(df_list, dataset, col_attr, split_attr = NA, point_
     ggtitle(col_attr) +
     xlab("UMAP1") + ylab("UMAP2") +
     guides(color = guide_legend(override.aes = list(size = 2)))
+  
+  ## account for case of huge legend:
+  if(length(unique(df[, col_attr])) > 10) {
+    g <- g + theme(legend.position = "legend.position") +
+      geom_text_repel(aes(label = text_label), hjust=0, vjust = 0, colour = "black")
+  }
+  
   if(!is.na(split_attr)) {
     g <- g +
       facet_wrap(sym(split_attr))
