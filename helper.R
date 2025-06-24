@@ -48,7 +48,7 @@ umap_plot_ggplot <- function(df_list, dataset, col_attr, split_attr = NA, point_
     guides(color = guide_legend(override.aes = list(size = 2)))
   
   ## account for case of huge legend:
-  if(length(unique(df[, col_attr])) > 10) {
+  if(length(unique(df[, col_attr])) > 20) {
     g <- g + theme(legend.position = "legend.position") +
       geom_text_repel(aes(label = text_label), hjust=0, vjust = 0, colour = "black")
   }
