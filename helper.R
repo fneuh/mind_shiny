@@ -24,7 +24,7 @@ umap_plot_ggplot <- function(df_list, dataset, col_attr, split_attr = NA, point_
   
   names(col_vec) <- unique(df[, col_attr])
   
-  if(length(unique(df[, col_attr])) > 10) {
+  if(length(unique(df[, col_attr])) > 20) {
     ## add text labels to central cells:
     df$text_label <- NA
     for(x in unique(df[, col_attr])) {
