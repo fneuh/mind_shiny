@@ -120,6 +120,8 @@ ui <- page_navbar(
     
     #img(src = "CM_FN_logo.png"),
     
+    img(src="https://mayerlab.net/wp-content/uploads/2025/06/CM_webLogo_light.svg", alt="Mayer Lab Logo", width="100"),
+    
     p("This webserver accompanies this publication: "),
     a(href="https://www.biorxiv.org/content/10.1101/2024.03.18.585524v2", "Bright, Kotlyarenko & Neuhaus et al. 2025"),
     h4("About this resource"),
@@ -137,7 +139,7 @@ ui <- page_navbar(
       tags$li(tags$b("Network:"), " Explore interactions between up to 3 TFs and their direct target genes. Gene-regulatory networks were precdited using SCENIC+: González-Blas & De Winter et al. (2023).")
     ),
     
-    p("Source code for this app is available on ", a(href="https://github.com/fneuh/mind_shiny", "Github"), "."),
+    p("If you want to discuss the biological context of the dataset, have questions, or would like to suggest features, feel free to join our open ", a(href="https://matrix.to/#/#Mouse.Inhibitory.Neuron.Development:mpg.de", "Matrix room"), ". Source code for this app is available on ", a(href="https://github.com/fneuh/mind_shiny", "Github"), "."),
   ),
   
   
